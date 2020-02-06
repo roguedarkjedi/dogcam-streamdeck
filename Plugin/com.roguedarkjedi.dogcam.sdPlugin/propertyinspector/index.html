@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
+        <meta name=apple-mobile-web-app-capable content=yes>
+        <meta name=apple-mobile-web-app-status-bar-style content=black>
+        <title>com.roguedarkjedi.dogcam Property Inspector</title>
+        <link rel="stylesheet" href="css/sdpi.css">
+    </head>
+    <body>
+        <div class="sdpi-wrapper">
+
+          <!-- DROP HTML-STUFF BELOW -->
+
+            <div class="sdpi-item">
+                <div class="sdpi-item-label">Websocket address</div>
+                <input id="websocketaddr" class="sdpi-item-value" type="text" value="" />
+			</div>
+			
+			<div type="range" class="sdpi-item" id="degreestep">
+                <div class="sdpi-item-label">Degree Step Amount</div>
+                <div class="sdpi-item-value">
+                    <span class="clickable" value="0">0.0</span>
+                    <input class="floating-tooltip" data-suffix="deg" type="range" min="0.0" max="10.0" value="3.0" />
+                    <span class="clickable" value="10.0">10.0</span>
+                </div>
+            </div>
+			
+			<div class="sdpi-item" id="movemethod">
+				<div class="sdpi-item-label">Movement Method</div> 
+				<select class="sdpi-item-value select">
+				   <option value="moverel">Relative</option>
+				   <option value="moveabs">Absolute</option>
+				   <option value="moveinterp">Interpolate</option>
+				</select> 
+			</div>
+
+			<div class="sdpi-item">
+				<div class="sdpi-item-label">Force Connect to Dogcam</div>
+				<button class="sdpi-item-value" id="forceconnect" value="Force Connection Now">Now</button>
+			</div>
+
+
+              <!-- END OF SDPI-WRAPPER -->
+
+        </div>
+
+        <div class="sdpi-info-label hidden" style="top: -1000;" value=""></div>
+        <script src="js/common.js"></script>
+        <script src="js/common_pi.js"></script>
+        <script src="js/index_pi.js"></script>
+    </body>
+    </html>
