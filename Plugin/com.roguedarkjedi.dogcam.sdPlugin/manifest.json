@@ -1,0 +1,85 @@
+{
+  "Actions": [
+    {
+      "Icon": "images/actionimage", 
+      "Name": "DogCam Up", 
+      "States": [
+        {
+          "Image": "images/up"
+        }
+      ], 
+      "Tooltip": "DogCam Up", 
+      "UUID": "com.roguedarkjedi.dogcam.up"
+    },
+    {
+      "Icon": "images/actionimage", 
+      "Name": "DogCam Down", 
+      "States": [
+        {
+          "Image": "images/down"
+        }
+      ], 
+      "Tooltip": "DogCam Down", 
+      "UUID": "com.roguedarkjedi.dogcam.down"
+    },
+    {
+      "Icon": "images/actionimage", 
+      "Name": "DogCam Left", 
+      "States": [
+        {
+          "Image": "images/left"
+        }
+      ], 
+      "Tooltip": "DogCam Left", 
+      "UUID": "com.roguedarkjedi.dogcam.left"
+    },
+    {
+      "Icon": "images/actionimage", 
+      "Name": "DogCam Right", 
+      "States": [
+        {
+          "Image": "images/right"
+        }
+      ], 
+      "Tooltip": "DogCam Right", 
+      "UUID": "com.roguedarkjedi.dogcam.right"
+    },
+	{
+      "Icon": "images/actionimage", 
+      "Name": "DogCam Reset", 
+      "States": [
+        {
+          "Image": "images/reset"
+        }
+      ], 
+      "Tooltip": "DogCam Reset", 
+      "UUID": "com.roguedarkjedi.dogcam.reset"
+    },
+  ], 
+  "SDKVersion": 2,
+  "Author": "RogueDarkJedi", 
+  "CodePath": "index.html",
+  "Category": "Dog Camera",
+  "CategoryIcon": "images/categoryIcon", 
+  "PropertyInspectorPath": "propertyinspector/index.html", 
+  "Description": "Manually controls the dog cam", 
+  "Name": "DogCam Controller", 
+  "Icon": "images/dogIcon", 
+  "URL": "https://roguedarkjedi.com", 
+  "Version": "1.0.0",
+  "OS": [
+    {
+        "Platform": "windows", 
+        "MinimumVersion" : "10"
+    }
+  ],
+  "ApplicationsToMonitor": {
+    "windows": [
+        "obs64.exe"
+    ]
+  },
+  "Software": 
+    {
+        "MinimumVersion" : "4.1"
+    }
+}
