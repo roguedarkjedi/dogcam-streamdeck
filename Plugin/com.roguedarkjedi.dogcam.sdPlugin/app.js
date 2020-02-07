@@ -10,6 +10,7 @@ function connected(jsn) {
 	$SD.on('com.roguedarkjedi.dogcam.right.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
 	
 	// TODO: Make global settings
+	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
     $SD.on('com.roguedarkjedi.dogcam.reset.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
 	
 	$SD.on('applicationDidLaunch', (jsonObj) => action.onApplicationStarted(jsonObj));
@@ -22,6 +23,7 @@ function connected(jsn) {
 const action = {
     settings:{},
 	websocket: null,
+	resetContext: "",
 	applicationRunning: false,
 	startDogcamConnect: function() {
 		if (this.websocket != null) {
@@ -37,8 +39,10 @@ const action = {
 		};
 		this.websocket.onerror = function(msg) {
 			console.log("Dogcam ERROR " + msg);
+			$SD.api.showAlert(parent.resetContext);
 		};
 	},
+	
 	exitDogcam: function() {
 		// Don't kill the websocket if OBS gets restarted
 		if (this.applicationRunning) {
@@ -50,7 +54,7 @@ const action = {
 			this.websocket.close(1000, "done");
 		}
 		this.websocket = null;
-	}
+	},
 	
 	onApplicationStarted: function(jsn) {
 		this.applicationRunning = true;
@@ -115,6 +119,11 @@ const action = {
 				console.log("Action type: "+actionType+" is not recognized!");
 		}
     },
+	
+	onWillAppear: function(jsn) {
+		// Save this context value
+		this.resetContext = jsn.context;
+	},
 
     onSendToPlugin: function (jsn) {
         /**
