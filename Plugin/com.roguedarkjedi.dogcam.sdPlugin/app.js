@@ -12,10 +12,10 @@ function connected(jsn) {
 	// TODO: Make global settings
 	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
 	$SD.on('com.roguedarkjedi.dogcam.reset.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
+	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
 	
 	$SD.on('applicationDidLaunch', (jsonObj) => action.onApplicationStarted(jsonObj));
 	$SD.on('applicationDidTerminate', (jsonObj) => action.onApplicationExit(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
 };
 
 /** ACTIONS */
