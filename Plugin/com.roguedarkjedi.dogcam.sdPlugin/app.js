@@ -15,7 +15,7 @@ function connected(jsn) {
 	
 	$SD.on('applicationDidLaunch', (jsonObj) => action.onApplicationStarted(jsonObj));
 	$SD.on('applicationDidTerminate', (jsonObj) => action.onApplicationExit(jsonObj));
-	$SD.on('sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
+	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
 };
 
 /** ACTIONS */
