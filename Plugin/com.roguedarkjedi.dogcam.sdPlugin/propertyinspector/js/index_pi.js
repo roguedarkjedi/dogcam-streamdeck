@@ -108,7 +108,18 @@ const updateUI = (pl) => {
             const foundElement = document.querySelector(`#${e}`);
             console.log(`searching for: #${e}`, 'found:', foundElement);
             if (foundElement && foundElement.type !== 'file') {
-                foundElement.value = pl[e];
+				if (foundElement.tagName == "DIV") {
+					const subElements = foundElement.getElementsByTagName("input");
+					console.log("found input sub elements: " + subElements.length);
+					for (var i = 0; i < subElements.length; ++i) {
+						if (subElements[i].hasAttribute("type") == true) {
+							subElements[i].value = pl[e];
+						}
+					}
+				}
+				else {
+					foundElement.value = pl[e];
+				}
                 const maxl = foundElement.getAttribute('maxlength') || 50;
                 const labels = document.querySelectorAll(`[for='${foundElement.id}']`);
                 if (labels.length) {
@@ -117,6 +128,10 @@ const updateUI = (pl) => {
                     }
                 }
             }
+			else if (foundElement && foundElement.type === 'range')
+			{
+				console.log("TEST");
+			}
         }
    })
 }
@@ -486,6 +501,49 @@ function localizeUI() {
     });
 }
 
+function rangeToPercent(value, min, max) {
+    return (value / (max - min));
+};
+function initToolTips() {
+    console.log("INITTOOLTIPS")
+    const tooltip = document.querySelector('.sdpi-info-label');
+    const arrElements = document.querySelectorAll('.floating-tooltip');
+    arrElements.forEach((e,i) => {
+        console.log("ELEMENTS:", e);
+        initToolTip(e, tooltip)
+    })
+}
+
+function initToolTip(element, tooltip) {
+    
+    const tw = tooltip.getBoundingClientRect().width;
+    const suffix = element.getAttribute('data-suffix') || '';
+
+    const fn = () => {
+      const elementRect = element.getBoundingClientRect();
+      const w = elementRect.width - tw / 2;
+      const percnt = rangeToPercent(element.value, element.min, element.max);
+      tooltip.textContent = suffix != "" ? `${element.value} ${suffix}` : String(element.value);
+      tooltip.style.left = `${elementRect.left + Math.round(w * percnt) - tw / 4}px`;
+      tooltip.style.top = `${elementRect.top - 32}px`;
+    };
+
+    if (element) {
+        element.addEventListener('mouseenter', function() {
+            tooltip.classList.remove('hidden');
+            tooltip.classList.add('shown');
+            fn();
+        }, false);
+
+        element.addEventListener('mouseout', function() {
+            tooltip.classList.remove('shown');
+            tooltip.classList.add('hidden');
+            fn();
+        }, false);
+        element.addEventListener('input', fn, false);
+    }
+}
+
 /**
  *
  * Some more (de-) initialization helpers
@@ -495,6 +553,7 @@ function localizeUI() {
 document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.add(navigator.userAgent.includes("Mac") ? 'mac' : 'win');
     prepareDOMElements();
+	initToolTips();
     $SD.on('localizationLoaded', (language) => {
         localizeUI();
     });
