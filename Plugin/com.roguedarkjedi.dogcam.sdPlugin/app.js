@@ -12,10 +12,10 @@ function connected(jsn) {
 	// TODO: Make global settings
 	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
 	$SD.on('com.roguedarkjedi.dogcam.reset.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
 	
 	$SD.on('applicationDidLaunch', (jsonObj) => action.onApplicationStarted(jsonObj));
 	$SD.on('applicationDidTerminate', (jsonObj) => action.onApplicationExit(jsonObj));
+	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
 };
 
 /** ACTIONS */
@@ -124,6 +124,7 @@ const action = {
 	
 	onWillAppear: function(jsn) {
 		// Save this context value
+		console.log("Context object cached");
 		this.resetContext = jsn.context;
 	},
 
@@ -133,9 +134,9 @@ const action = {
 		* (e.g. some value, which is not saved to settings) 
 		* You can send this event from Property Inspector (see there for an example)
 		*/ 
-
-		const sdpi_collection = Utils.getProp(jsn, 'payload.sdpi_collection', {});
-		if (sdpi_collection.value && sdpi_collection.value !== undefined) {
+		const sdpi_collection = Utils.getProp(jsn, 'payload.forceconnect', {});
+		if ((sdpi_collection.value && sdpi_collection.value !== undefined) || sdpi_collection == 1) {
+			console.log("Force connection started!");
 			this.startDogcamConnect();
 		}
 	},
