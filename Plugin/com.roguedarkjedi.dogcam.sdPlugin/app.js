@@ -27,18 +27,18 @@ const action = {
 	applicationRunning: false,
 	
 	startDogcamConnect: function() {
-		if (this.websocket != null) {
+		if (action.websocket != null) {
 			console.log("Connect was called but we are already connected!");
 			return;
 		}
-		this.websocket = new WebSocket("ws://"+this.settings["websocketaddr"]+"/");
-		this.websocket.onopen = function(event) {
+		action.websocket = new WebSocket("ws://"+action.settings["websocketaddr"]+"/");
+		action.websocket.onopen = function(event) {
 			console.log("Dogcam Connection established");
 		};
-		this.websocket.onmessage = function(msg) {
+		action.websocket.onmessage = function(msg) {
 			console.log("Dogcam Got message "+msg);
 		};
-		this.websocket.onerror = function(msg) {
+		action.websocket.onerror = function(msg) {
 			console.log("Dogcam ERROR " + msg);
 			$SD.api.showAlert(action.resetContext);
 			action.websocket = null;
@@ -47,22 +47,22 @@ const action = {
 	
 	exitDogcam: function() {
 		// Don't kill the websocket if OBS gets restarted
-		if (this.applicationRunning) {
+		if (action.applicationRunning) {
 			console.log("Application was restarted");
 			return;
 		}
 		
-		if (this.websocket != null) {
+		if (action.websocket != null) {
 			console.log("Closing the dogcam connection");
-			this.websocket.close(1000, "done");
+			action.websocket.close(1000, "done");
 		}
-		this.websocket = null;
+		action.websocket = null;
 	},
 	
 	onApplicationStarted: function(jsn) {
-		this.applicationRunning = true;
+		action.applicationRunning = true;
 		
-		if (Object.keys(this.settings).length === 0) {
+		if (Object.keys(action.settings).length === 0) {
 			console.log("Missing settings to connect to dogcam! Will call again.");
 			setTimeout(function(jsn) {action.onApplicationStarted(jsn);}, 5000);
 			return;
@@ -73,30 +73,30 @@ const action = {
 	},
 	
 	onApplicationExit: function(jsn) {
-		this.applicationRunning = false;
+		action.applicationRunning = false;
 		console.log("Starting countdown for disconnection handling");
 		setTimeout(action.exitDogcam, 15000);
 	},
 	
 	onDidReceiveSettings: function(jsn) {
 		console.log("Got settings event!");
-		this.settings = Utils.getProp(jsn, 'payload.settings', {});
+		action.settings = Utils.getProp(jsn, 'payload.settings', {});
 	},
 
 	onKeyDown: function (jsn) {
 		var angularDirection = 1.0;
 		var moveType = "moverel";
 		
-		if (this.settings) {
-			if (this.settings.hasOwnProperty('degreestep')) {
-				angularDirection = this.settings["degreestep"];
+		if (action.settings) {
+			if (action.settings.hasOwnProperty('degreestep')) {
+				angularDirection = action.settings["degreestep"];
 			}
-			if (this.settings.hasOwnProperty('movemethod')) {
-				moveType = this.settings["movemethod"];
+			if (action.settings.hasOwnProperty('movemethod')) {
+				moveType = action.settings["movemethod"];
 			}
 		}
 		
-		if (this.websocket == null) {
+		if (action.websocket == null) {
 			console.log("Dropping push down event as the websocket is not valid at this time");
 			return;
 		}
@@ -104,19 +104,19 @@ const action = {
 		var actionType = jsn.action.replace("com.roguedarkjedi.dogcam.", "");
 		switch (actionType) {
 		case "up":
-			this.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": '+angularDirection+'}');
+			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": '+angularDirection+'}');
 			break;
 		case "down":
-			this.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
+			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
 			break;
 		case "left":
-			this.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
+			action.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
 			break;
 		case "right":
-			this.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": '+angularDirection+'}');
+			action.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": '+angularDirection+'}');
 			break;
 		case "reset":
-			this.websocket.send('{"servo": "tilt", "action": "resetall"}');
+			action.websocket.send('{"servo": "tilt", "action": "resetall"}');
 			$SD.api.showOk(jsn.context);
 			break;
 		default:
@@ -127,7 +127,7 @@ const action = {
 	onWillAppear: function(jsn) {
 		// Save this context value
 		console.log("Context object cached");
-		this.resetContext = jsn.context;
+		action.resetContext = jsn.context;
 		$SD.api.getSettings(jsn.context, []);
 	},
 
