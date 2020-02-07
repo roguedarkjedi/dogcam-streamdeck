@@ -48,6 +48,7 @@ const action = {
 	exitDogcam: function() {
 		// Don't kill the websocket if OBS gets restarted
 		if (this.applicationRunning) {
+			console.log("Application was restarted");
 			return;
 		}
 		
@@ -62,22 +63,23 @@ const action = {
 		this.applicationRunning = true;
 		
 		if (Object.keys(this.settings).length === 0) {
-			console.log("Missing settings to connect to dogcam!");
+			console.log("Missing settings to connect to dogcam! Will call again.");
+			setTimeout(function(jsn) {action.onApplicationStarted(jsn);}, 5000);
 			return;
 		}
 		
 		console.log("Starting countdown for connection to dogcam");
-		setTimeout(this.startDogcamConnect, 20000);
+		setTimeout(action.startDogcamConnect, 40000);
 	},
 	
 	onApplicationExit: function(jsn) {
 		this.applicationRunning = false;
-		setTimeout(this.exitDogcam, 15000);
+		console.log("Starting countdown for disconnection handling");
+		setTimeout(action.exitDogcam, 15000);
 	},
 	
 	onDidReceiveSettings: function(jsn) {
-		console.log('%c%s', 'color: white; background: red; font-size: 15px;', '[app.js]onDidReceiveSettings:');
-
+		console.log("Got settings event!");
 		this.settings = Utils.getProp(jsn, 'payload.settings', {});
 	},
 
@@ -126,6 +128,7 @@ const action = {
 		// Save this context value
 		console.log("Context object cached");
 		this.resetContext = jsn.context;
+		$SD.api.getSettings(jsn.context, []);
 	},
 
 	onSendToPlugin: function (jsn) {
