@@ -40,7 +40,8 @@ const action = {
 		};
 		this.websocket.onerror = function(msg) {
 			console.log("Dogcam ERROR " + msg);
-			$SD.api.showAlert(parent.resetContext);
+			$SD.api.showAlert(action.resetContext);
+			action.websocket = null;
 		};
 	},
 	
