@@ -104,10 +104,10 @@ const action = {
 		var actionType = jsn.action.replace("com.roguedarkjedi.dogcam.", "");
 		switch (actionType) {
 		case "up":
-			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": '+angularDirection+'}');
+			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
 			break;
 		case "down":
-			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
+			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": '+angularDirection+'}');
 			break;
 		case "left":
 			action.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
