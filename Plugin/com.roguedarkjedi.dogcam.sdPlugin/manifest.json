@@ -54,7 +54,7 @@
       ], 
       "Tooltip": "DogCam Reset", 
       "UUID": "com.roguedarkjedi.dogcam.reset"
-    },
+    }
   ], 
   "SDKVersion": 2,
   "Author": "RogueDarkJedi", 
