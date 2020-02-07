@@ -31,7 +31,7 @@ const action = {
 			console.log("Connect was called but we are already connected!");
 			return;
 		}
-		this.websocket = new Websocket("ws://"+this.settings["websocketaddr"]+"/");
+		this.websocket = new WebSocket("ws://"+this.settings["websocketaddr"]+"/");
 		this.websocket.onopen = function(event) {
 			console.log("Dogcam Connection established");
 		};
