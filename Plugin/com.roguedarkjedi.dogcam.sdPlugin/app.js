@@ -45,9 +45,9 @@ const action = {
 		};
 	},
 	
-	exitDogcam: function() {
+	exitDogcam: function(force) {
 		// Don't kill the websocket if OBS gets restarted
-		if (action.applicationRunning) {
+		if (action.applicationRunning && force === undefined) {
 			console.log("Application was restarted");
 			return;
 		}
@@ -140,6 +140,7 @@ const action = {
 		const sdpi_collection = Utils.getProp(jsn, 'payload.forceconnect', {});
 		if ((sdpi_collection.value && sdpi_collection.value !== undefined) || sdpi_collection == 1) {
 			console.log("Force connection started!");
+			this.exitDogcam(true);
 			this.startDogcamConnect();
 		}
 	},
