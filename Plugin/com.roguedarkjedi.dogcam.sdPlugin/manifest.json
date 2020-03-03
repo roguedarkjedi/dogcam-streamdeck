@@ -44,7 +44,7 @@
       "Tooltip": "DogCam Right", 
       "UUID": "com.roguedarkjedi.dogcam.right"
     },
-	{
+    {
       "Icon": "images/actionimage", 
       "Name": "DogCam Reset", 
       "States": [
@@ -54,6 +54,17 @@
       ], 
       "Tooltip": "DogCam Reset", 
       "UUID": "com.roguedarkjedi.dogcam.reset"
+    },
+    {
+      "Icon": "images/actionimage", 
+      "Name": "DogCam AI Toggle", 
+      "States": [
+        {
+          "Image": "images/aitoggle"
+        }
+      ], 
+      "Tooltip": "DogCam AI Toggle", 
+      "UUID": "com.roguedarkjedi.dogcam.aitoggle"
     }
   ], 
   "SDKVersion": 2,
@@ -66,7 +77,7 @@
   "Name": "DogCam Controller", 
   "Icon": "images/dogIcon", 
   "URL": "https://roguedarkjedi.com", 
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "OS": [
     {
         "Platform": "windows", 
