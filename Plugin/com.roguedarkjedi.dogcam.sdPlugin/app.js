@@ -8,6 +8,7 @@ function connected(jsn) {
 	$SD.on('com.roguedarkjedi.dogcam.down.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
 	$SD.on('com.roguedarkjedi.dogcam.left.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
 	$SD.on('com.roguedarkjedi.dogcam.right.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
+	$SD.on('com.roguedarkjedi.dogcam.aitoggle.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
 	
 	// TODO: Make global settings
 	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
@@ -25,6 +26,7 @@ const action = {
 	websocket: null,
 	resetContext: "",
 	applicationRunning: false,
+	aiDisabled: false,
 	
 	startDogcamConnect: function() {
 		if (action.websocket != null) {
@@ -118,6 +120,12 @@ const action = {
 		case "reset":
 			action.websocket.send('{"servo": "tilt", "action": "resetall"}');
 			$SD.api.showOk(jsn.context);
+			break;
+		case "aitoggle":
+			var aiCommand = (action.aiDisabled) ? "enableai" : "disableai";
+			action.websocket.send('{"action": '+aiCommand+'}');
+			$SD.api.setTitle(jsn.context, (action.aiDisabled) ? "AI Enabled" : "AI Disabled");
+			action.aiDisabled = !action.aiDisabled;
 			break;
 		default:
 			console.log("Action type: "+actionType+" is not recognized!");
