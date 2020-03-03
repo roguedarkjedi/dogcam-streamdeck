@@ -123,7 +123,7 @@ const action = {
 			break;
 		case "aitoggle":
 			var aiCommand = (action.aiDisabled) ? "enableai" : "disableai";
-			action.websocket.send('{"action": '+aiCommand+'}');
+			action.websocket.send('{"action": "'+aiCommand+'"}');
 			$SD.api.setTitle(jsn.context, (action.aiDisabled) ? "AI Enabled" : "AI Disabled");
 			action.aiDisabled = !action.aiDisabled;
 			break;
