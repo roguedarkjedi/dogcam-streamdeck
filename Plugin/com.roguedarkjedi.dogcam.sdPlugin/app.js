@@ -3,20 +3,22 @@
 $SD.on('connected', (jsonObj) => connected(jsonObj));
 
 function connected(jsn) {
-	$SD.on('com.roguedarkjedi.dogcam.reset.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.up.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.down.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.left.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.right.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.aitoggle.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
+	var keyArray = ["up", "down", "reset", "left", "right", "aitoggle"];
 	
-	// TODO: Make global settings
-	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
+	for (var keyAction in keyArray)
+	{
+		$SD.on('com.roguedarkjedi.dogcam.'+keyAction+'.keyDown', (jsonObj) => action.onKeyDown(jsonObj));
+		$SD.on('com.roguedarkjedi.dogcam.'+keyAction+'.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
+	}
+	
+	// TODO: Eventually make this a global setting
 	$SD.on('com.roguedarkjedi.dogcam.reset.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
 	
+	// This displays a warning if something didn't go right
+	$SD.on('com.roguedarkjedi.dogcam.reset.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
 	$SD.on('applicationDidLaunch', (jsonObj) => action.onApplicationStarted(jsonObj));
 	$SD.on('applicationDidTerminate', (jsonObj) => action.onApplicationExit(jsonObj));
-	$SD.on('com.roguedarkjedi.dogcam.reset.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
+	
 };
 
 /** ACTIONS */
@@ -86,18 +88,7 @@ const action = {
 	},
 
 	onKeyDown: function (jsn) {
-		var angularDirection = 1.0;
-		var moveType = "moverel";
-		
-		if (action.settings) {
-			if (action.settings.hasOwnProperty('degreestep')) {
-				angularDirection = action.settings["degreestep"];
-			}
-			if (action.settings.hasOwnProperty('movemethod')) {
-				moveType = action.settings["movemethod"];
-			}
-		}
-		
+	
 		if (action.websocket == null) {
 			console.log("Dropping push down event as the websocket is not valid at this time");
 			return;
@@ -106,16 +97,12 @@ const action = {
 		var actionType = jsn.action.replace("com.roguedarkjedi.dogcam.", "");
 		switch (actionType) {
 		case "up":
-			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
-			break;
 		case "down":
-			action.websocket.send('{"servo": "tilt", "action": "'+moveType+'", "angle": '+angularDirection+'}');
+			action.websocket.send('{"servo": "tilt", "action": "'+actionType+'"}');
 			break;
 		case "left":
-			action.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": -'+angularDirection+'}');
-			break;
 		case "right":
-			action.websocket.send('{"servo": "pan", "action": "'+moveType+'", "angle": '+angularDirection+'}');
+			action.websocket.send('{"servo": "pan", "action": "'+actionType+'"}');
 			break;
 		case "reset":
 			action.websocket.send('{"servo": "tilt", "action": "resetall"}');
@@ -140,11 +127,6 @@ const action = {
 	},
 
 	onSendToPlugin: function (jsn) {
-		/**
-		* this is a message sent directly from the Property Inspector 
-		* (e.g. some value, which is not saved to settings) 
-		* You can send this event from Property Inspector (see there for an example)
-		*/ 
 		const sdpi_collection = Utils.getProp(jsn, 'payload.forceconnect', {});
 		if ((sdpi_collection.value && sdpi_collection.value !== undefined) || sdpi_collection == 1) {
 			console.log("Force connection started!");
@@ -152,11 +134,6 @@ const action = {
 			this.startDogcamConnect();
 		}
 	},
-
-	/**
-	* This snippet shows, how you could save settings persistantly to Stream Deck software
-	* It is not used in this example plugin.
-	*/
 
 	saveSettings: function (jsn, sdpi_collection) {
 		console.log('saveSettings:', jsn);
@@ -172,4 +149,3 @@ const action = {
 		}
 	}
 };
-
