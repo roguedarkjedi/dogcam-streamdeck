@@ -10,50 +10,26 @@
     </head>
     <body>
         <div class="sdpi-wrapper">
-
-          <!-- DROP HTML-STUFF BELOW -->
-
-            <div class="sdpi-item">
-                <div class="sdpi-item-label">Websocket address</div>
-                <input id="websocketaddr" class="sdpi-item-value" type="text" value="" />
-			</div>
+		<div class="sdpi-item">
+                	<div class="sdpi-item-label">Websocket address</div>
+                	<input id="websocketaddr" class="sdpi-item-value" type="text" value="" />
+		</div>
 			
-			<div type="range" class="sdpi-item" id="degreestep">
-                <div class="sdpi-item-label">Degree Step Amount</div>
-                <div class="sdpi-item-value">
-                    <span class="clickable" value="0.0">0.0</span>
-                    <input class="floating-tooltip" data-suffix="deg" type="range" min="0.0" max="15.0" step="0.5" />
-                    <span class="clickable" value="15.0">15.0</span>
-                </div>
-            </div>
-			
-			<div class="sdpi-item">
-				<div class="sdpi-item-label">Movement Method</div> 
-				<select id="movemethod" class="sdpi-item-value select">
-				   <option value="moverel">Relative</option>
-				   <option value="moveabs">Absolute</option>
-				   <option value="moveinterp">Interpolate</option>
-				</select> 
-			</div>
-
-			<div class="sdpi-item">
-				<div class="sdpi-item-label">Force Connect to Dogcam</div>
-				<button class="sdpi-item-value" onclick="forceconnect()">Now</button>
-			</div>
-
-
+		<div class="sdpi-item">
+			<div class="sdpi-item-label">Force Connect to Dogcam</div>
+			<button class="sdpi-item-value" onclick="forceConnect()">Now</button>
+		</div>
               <!-- END OF SDPI-WRAPPER -->
-
         </div>
 
         <div class="sdpi-info-label hidden" style="top: -1000;" value=""></div>
         <script src="js/common.js"></script>
         <script src="js/common_pi.js"></script>
         <script src="js/index_pi.js"></script>
-		<script>
-		function forceconnect() {
-			sendValueToPlugin(1, "forceconnect"); 
-		}
-		</script>
+	<script>
+	function forceConnect() {
+		sendValueToPlugin(1, "forceconnect"); 
+	}
+	</script>
     </body>
     </html>
