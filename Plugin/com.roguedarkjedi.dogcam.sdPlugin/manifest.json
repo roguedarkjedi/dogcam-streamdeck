@@ -77,7 +77,7 @@
   "Name": "DogCam Controller", 
   "Icon": "images/dogIcon", 
   "URL": "https://roguedarkjedi.com", 
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "OS": [
     {
         "Platform": "windows", 
