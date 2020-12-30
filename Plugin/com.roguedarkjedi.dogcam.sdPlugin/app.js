@@ -98,19 +98,19 @@ const action = {
 		switch (actionType) {
 		case "up":
 		case "down":
-			action.websocket.send('{"servo": "tilt", "action": "'+actionType+'"}');
+			action.websocket.send('{"servo": "tilt", "type": "action", "action": "'+actionType+'"}');
 			break;
 		case "left":
 		case "right":
-			action.websocket.send('{"servo": "pan", "action": "'+actionType+'"}');
+			action.websocket.send('{"servo": "pan", "type": "action", "action": "'+actionType+'"}');
 			break;
 		case "reset":
-			action.websocket.send('{"servo": "tilt", "action": "resetall"}');
+			action.websocket.send('{"servo": "tilt", "type": "action", "action": "resetall"}');
 			$SD.api.showOk(jsn.context);
 			break;
 		case "aitoggle":
 			var aiCommand = (action.aiDisabled) ? "enableai" : "disableai";
-			action.websocket.send('{"action": "'+aiCommand+'"}');
+			action.websocket.send('{"type": "action", "action": "'+aiCommand+'"}');
 			$SD.api.setTitle(jsn.context, (action.aiDisabled) ? "AI Enabled" : "AI Disabled");
 			action.aiDisabled = !action.aiDisabled;
 			break;
